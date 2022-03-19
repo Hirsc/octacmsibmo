@@ -24,16 +24,16 @@ export class BarcodeReader {
     }
 
 
-    public async connectedCallback() {
+    public async connectedCallback(): Promise<void> {
         await this.init()
         await this.start()
     }
 
-    public disconnectedCallback() {
+    public disconnectedCallback(): void {
         this.reset()
     }
 
-    public render() {
+    public render(): Element[] {
         return (
             <div>
                 <ion-fab horizontal="end" vertical="bottom" slot="fixed">
@@ -69,7 +69,7 @@ export class BarcodeReader {
         console.log("ZXing code reader initialized")
         this.videoInputDevices = await this.codeReader.listVideoInputDevices()
         this.videoInputDevices = this.videoInputDevices.filter(onlyRelevantVideoInput)
-        this.selectedDeviceId = this.videoInputDevices[0].deviceId
+        this.selectedDeviceId = this.videoInputDevices[0]?.deviceId
     }
 
     private async start() {

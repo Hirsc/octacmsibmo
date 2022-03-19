@@ -1,34 +1,37 @@
 import { Component, h, Prop, State } from "@stencil/core"
 
-import { Food } from "../../entities/food"
-import { Adder } from "./service/adder"
+import type { Food } from "../../entities/food"
 
-export interface FoodService extends Adder<Food> { }
+import type { AddFoodToADay } from "./service/interface"
+
+export type FoodService = AddFoodToADay
 
 @Component(
     {
         styleUrl: "index.css",
         tag: "add-food",
-    },
+    }
 )
 export class AddFood {
     @State() public error: Error
     @State() public formControls: Food = {
-        dueDate: null,
-        ean: null,
-        id: null,
         name: null,
+        code: null,
+        id: null,
+        protein: null,
+        fat: null,
+        carbonhydrate: null,
+        energy: null,
+        amount: null,
     }
     @Prop() public service: FoodService
+    @Prop() public day: string
 
     private title = "Add Food"
     private name = "Name"
-    private dueDate = "Mindeshaltbarkeitsdatum"
     private ean = "EAN"
 
-    public render() {
-
-
+    public render(): Element[] {
         return [
             <ion-header translucent={true}>
                 <ion-toolbar color="primary">
@@ -48,17 +51,6 @@ export class AddFood {
                                 required
                                 type="text"
                                 onInput={this.changeFormValue("name")}
-                            />
-                        </ion-item>
-
-                        <ion-item>
-                            <ion-label position="stacked">
-                                {this.dueDate} <ion-text color="danger">*</ion-text>
-                            </ion-label>
-                            <ion-input
-                                required
-                                type="number"
-                                onInput={this.changeFormValue("dueDate")}
                             />
                         </ion-item>
 
@@ -94,7 +86,7 @@ export class AddFood {
 
     private handleSubmit(e: Event) {
         e.preventDefault()
-        this.service.add(this.formControls)
+        this.service.addFoodToADay(this.formControls, this.day)
         window.history.back()
     }
 

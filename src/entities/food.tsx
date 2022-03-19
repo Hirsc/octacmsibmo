@@ -1,15 +1,23 @@
-import { UnixTimestamp } from "../utils/unix-timestamp"
-import { EuropeanArticelNumber } from "./european-articel-number"
-import { ID } from "./id"
+import type { EuropeanArticelNumber } from "./european-articel-number"
+import type { ID } from "./id"
 
 export interface Food {
     name: string
-    dueDate?: UnixTimestamp
-    ean: EuropeanArticelNumber
+    code: EuropeanArticelNumber
     id: ID
+    protein: Gramm
+    fat: Gramm
+    carbonhydrate: Gramm
+    energy: Kcal
+    amount: Gramm
 }
 
+export interface DayMacros {
+    protein: Gramm
+    fat: Gramm
+    carbonhydrate: Gramm
+    energy: Kcal
+}
 
-
-
-
+export type Gramm = number
+export type Kcal = number

@@ -1,6 +1,4 @@
-import { Plugins } from "@capacitor/core"
-
-const { Storage } = Plugins
+import { Storage } from '@capacitor/storage';
 
 export class StorageService<T> implements Setter<T>, Getter<T>, Remover {
 

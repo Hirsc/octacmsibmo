@@ -1,4 +1,4 @@
-import { Config } from "@stencil/core"
+import type { Config } from "@stencil/core"
 
 // https://stenciljs.com/docs/config
 export const config: Config = {
@@ -9,4 +9,5 @@ export const config: Config = {
         type: "www",
     }],
     taskQueue: "async",
+    sourceMap: true,
 }

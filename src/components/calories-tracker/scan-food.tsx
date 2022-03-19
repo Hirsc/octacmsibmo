@@ -1,17 +1,16 @@
-import { DatetimeChangeEventDetail, InputChangeEventDetail } from "@ionic/core"
+import type { InputChangeEventDetail } from "@ionic/core"
 import { Component, h, Prop, State, Watch } from "@stencil/core"
 
-import { Food } from "../../entities/food"
-import { FoodInformation } from "../../entities/food-information"
+import type { Food } from "../../entities/food"
+import type { FoodInformation } from "../../entities/food-information"
 import { NotFound } from "../../entities/not-found"
-import { getDateAsUnixTimestamp } from "../../utils/get-date-as-unix-timestamp"
-import { getPossibleDueYears } from "../../utils/get-possible-due-years"
-import { Getter } from "../../open-food-facts/getter"
+import type { Getter } from "../../open-food-facts/getter"
 import { toastError } from "../toasts/error"
-import { Adder } from "./service/adder"
 
-export interface FoodService extends Adder<Food> { }
-export interface FoodInformationService extends Getter<FoodInformation> { }
+import type { AddFoodToADay } from "./service/interface"
+
+export type FoodService = AddFoodToADay
+export type FoodInformationService = Getter<FoodInformation>
 
 @Component(
     {
@@ -21,33 +20,35 @@ export interface FoodInformationService extends Getter<FoodInformation> { }
 )
 export class ScanFood {
     @State() public formControls: Food = {
-        dueDate: null,
-        ean: null,
-        id: null,
         name: null,
+        code: null,
+        id: null,
+        protein: null,
+        fat: null,
+        carbonhydrate: null,
+        energy: null,
+        amount: null,    
     }
     @Prop() public foodService: FoodService
     @Prop() public foodInformationService: FoodInformationService
+    @Prop() public dayMonthYear: string
     @State() private error: Error
 
     private title = "Add Food"
-    private possibleDueYears = getPossibleDueYears()
-    private dateFormat = "DD/MM/YYYY"
 
     constructor() {
-        this.changeEANCode = this.changeEANCode.bind(this)
-        this.changeDueDate = this.changeDueDate.bind(this)
+        this.changecodeCode = this.changecodeCode.bind(this)
         this.changeName = this.changeName.bind(this)
     }
 
-    public componentDidLoad() {
+    public componentDidLoad(): void {
         this.formControls = {
             ...this.formControls,
-            ean: "400195416508",
+            code: "5449000000996",
         }
     }
 
-    public render() {
+    public render(): Element[] {
         return [
             <ion-header translucent={true}>
                 <ion-toolbar color="primary">
@@ -60,33 +61,16 @@ export class ScanFood {
                 </ion-toolbar>
             </ion-header>,
             (
-                this.formControls.ean === null &&
+                this.formControls.code === null &&
                 <ion-content color="dark">
                     <barcode-reader
-                        onCodeChange={this.changeEANCode}
+                        onCodeChange={this.changecodeCode}
                     />
                 </ion-content>
             ),
             (
-                this.formControls.dueDate === null && this.formControls.ean !== null &&
+                this.formControls.code !== null &&
                 <ion-content>
-                    <ion-item
-                        class="root ion-text-center"
-                    >
-                        <ion-label
-                            position="stacked"
-                            mode="ios"
-                        >
-                            {this.dateFormat}
-                        </ion-label>
-                        <ion-datetime
-                            mode="ios"
-                            display-format={this.dateFormat}
-                            yearValues={this.possibleDueYears}
-                            onIonChange={this.changeDueDate}
-                        />
-                    </ion-item>
-
                     {this.error &&
                         <ion-item
                             class="root ion-text-center"
@@ -111,8 +95,8 @@ export class ScanFood {
 
     @Watch("formControls")
     private async watchHandler(newValue: Food, oldValue: Food) {
-        if (oldValue.ean !== newValue.ean) {
-            const [foodInformation, error] = await this.foodInformationService.get(newValue.ean)
+        if (oldValue.code !== newValue.code) {
+            const [foodInformation, error] = await this.foodInformationService.get(newValue.code)
 
             if (error) {
                 toastOFFError(error)
@@ -120,7 +104,7 @@ export class ScanFood {
 
                 this.formControls = {
                     ...this.formControls,
-                    ean: null,
+                    code: null,
                 }
             }
 
@@ -134,23 +118,22 @@ export class ScanFood {
         }
 
         if (
-            newValue.ean !== null
+            newValue.code !== null
             && newValue.name !== null
-            && newValue.dueDate !== null
         ) {
             this.saveFood()
         }
     }
 
     private saveFood() {
-        this.foodService.add(this.formControls)
+        this.foodService.addFoodToADay(this.formControls, this.dayMonthYear)
         window.history.back()
     }
 
-    private changeEANCode(newCode: string) {
+    private changecodeCode(newCode: string) {
         this.formControls = {
             ...this.formControls,
-            ean: newCode,
+            code: newCode,
         }
     }
 
@@ -160,16 +143,6 @@ export class ScanFood {
             name: event.detail.value,
         }
     }
-
-    private changeDueDate(event: CustomEvent<DatetimeChangeEventDetail>) {
-        const selectedDate = new Date(event.detail.value)
-        const unixDueDate = getDateAsUnixTimestamp(selectedDate)
-        this.formControls = {
-            ...this.formControls,
-            dueDate: unixDueDate,
-        }
-    }
-
 }
 
 function toastOFFError(error: Error) {

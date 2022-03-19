@@ -1,9 +1,11 @@
 import { Component, h } from "@stencil/core"
+import { format } from "date-fns"
+
 import { OpenFoodFactsService } from "../../open-food-facts"
 import { StorageService } from "../../services/storage"
-import { FoodService } from "../calories-tracker/service"
+import { CaloriesService } from "../calories-tracker/service"
 
-const foodService = new FoodService(StorageService)
+const foodService = new CaloriesService(StorageService)
 const foodInformationService = new OpenFoodFactsService()
 
 @Component({
@@ -12,15 +14,16 @@ const foodInformationService = new OpenFoodFactsService()
 })
 export class AppRoot {
 
-    public render() {
+    public render(): Element[] {
+        const todayMonthYear = format(new Date(), 'dd-MM-yyyy')
         return (
             <ion-app>
                 <ion-router useHash={false}>
-                    <ion-route url="/" component="food-list" componentProps={{ service: foodService }} />
+                    <ion-route url="/" component="day-overview" componentProps={{ dayMonthYear: todayMonthYear }} />
                     <ion-route
                         url="/add"
                         component="scan-food"
-                        componentProps={{ foodService, foodInformationService }}
+                        componentProps={{ foodService, foodInformationService, dayMonthYear: todayMonthYear }}
                     />
                     <ion-route url="/profile/:name" component="app-profile" />
                 </ion-router>

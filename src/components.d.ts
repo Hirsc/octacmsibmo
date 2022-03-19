@@ -6,11 +6,13 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { FoodService } from "./components/calories-tracker/add";
+import { FoodService as FoodService1 } from "./components/calories-tracker/current-day-tracked-food copy";
+import { FoodService as FoodService2 } from "./components/calories-tracker/current-day-calories-and-macros";
 import { UnixTimestamp } from "./utils/unix-timestamp";
-import { FoodService as FoodService1 } from "./components/calories-tracker/list";
-import { FoodInformationService, FoodService as FoodService2 } from "./components/calories-tracker/scan-food";
+import { FoodInformationService, FoodService as FoodService3 } from "./components/calories-tracker/scan-food";
 export namespace Components {
     interface AddFood {
+        "day": string;
         "service": FoodService;
     }
     interface AppRoot {
@@ -18,13 +20,22 @@ export namespace Components {
     interface BarcodeReader {
         "onCodeChange": (readCode: string) => void;
     }
+    interface CurrentDayFoodList {
+        "dayMonthYear": string;
+        "service": FoodService;
+    }
+    interface CurrentDayMacros {
+        "dayMonthYear": string;
+        "service": FoodService;
+    }
     interface DateReader {
         "onDateChange": (date: UnixTimestamp) => void;
     }
-    interface FoodList {
-        "service": FoodService;
+    interface DayOverview {
+        "dayMonthYear": string;
     }
     interface ScanFood {
+        "dayMonthYear": string;
         "foodInformationService": FoodInformationService;
         "foodService": FoodService;
     }
@@ -48,17 +59,29 @@ declare global {
         prototype: HTMLBarcodeReaderElement;
         new (): HTMLBarcodeReaderElement;
     };
+    interface HTMLCurrentDayFoodListElement extends Components.CurrentDayFoodList, HTMLStencilElement {
+    }
+    var HTMLCurrentDayFoodListElement: {
+        prototype: HTMLCurrentDayFoodListElement;
+        new (): HTMLCurrentDayFoodListElement;
+    };
+    interface HTMLCurrentDayMacrosElement extends Components.CurrentDayMacros, HTMLStencilElement {
+    }
+    var HTMLCurrentDayMacrosElement: {
+        prototype: HTMLCurrentDayMacrosElement;
+        new (): HTMLCurrentDayMacrosElement;
+    };
     interface HTMLDateReaderElement extends Components.DateReader, HTMLStencilElement {
     }
     var HTMLDateReaderElement: {
         prototype: HTMLDateReaderElement;
         new (): HTMLDateReaderElement;
     };
-    interface HTMLFoodListElement extends Components.FoodList, HTMLStencilElement {
+    interface HTMLDayOverviewElement extends Components.DayOverview, HTMLStencilElement {
     }
-    var HTMLFoodListElement: {
-        prototype: HTMLFoodListElement;
-        new (): HTMLFoodListElement;
+    var HTMLDayOverviewElement: {
+        prototype: HTMLDayOverviewElement;
+        new (): HTMLDayOverviewElement;
     };
     interface HTMLScanFoodElement extends Components.ScanFood, HTMLStencilElement {
     }
@@ -70,13 +93,16 @@ declare global {
         "add-food": HTMLAddFoodElement;
         "app-root": HTMLAppRootElement;
         "barcode-reader": HTMLBarcodeReaderElement;
+        "current-day-food-list": HTMLCurrentDayFoodListElement;
+        "current-day-macros": HTMLCurrentDayMacrosElement;
         "date-reader": HTMLDateReaderElement;
-        "food-list": HTMLFoodListElement;
+        "day-overview": HTMLDayOverviewElement;
         "scan-food": HTMLScanFoodElement;
     }
 }
 declare namespace LocalJSX {
     interface AddFood {
+        "day"?: string;
         "service"?: FoodService;
     }
     interface AppRoot {
@@ -84,13 +110,22 @@ declare namespace LocalJSX {
     interface BarcodeReader {
         "onCodeChange"?: (readCode: string) => void;
     }
+    interface CurrentDayFoodList {
+        "dayMonthYear"?: string;
+        "service"?: FoodService;
+    }
+    interface CurrentDayMacros {
+        "dayMonthYear"?: string;
+        "service"?: FoodService;
+    }
     interface DateReader {
         "onDateChange"?: (date: UnixTimestamp) => void;
     }
-    interface FoodList {
-        "service"?: FoodService;
+    interface DayOverview {
+        "dayMonthYear"?: string;
     }
     interface ScanFood {
+        "dayMonthYear"?: string;
         "foodInformationService"?: FoodInformationService;
         "foodService"?: FoodService;
     }
@@ -98,8 +133,10 @@ declare namespace LocalJSX {
         "add-food": AddFood;
         "app-root": AppRoot;
         "barcode-reader": BarcodeReader;
+        "current-day-food-list": CurrentDayFoodList;
+        "current-day-macros": CurrentDayMacros;
         "date-reader": DateReader;
-        "food-list": FoodList;
+        "day-overview": DayOverview;
         "scan-food": ScanFood;
     }
 }
@@ -110,8 +147,10 @@ declare module "@stencil/core" {
             "add-food": LocalJSX.AddFood & JSXBase.HTMLAttributes<HTMLAddFoodElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
             "barcode-reader": LocalJSX.BarcodeReader & JSXBase.HTMLAttributes<HTMLBarcodeReaderElement>;
+            "current-day-food-list": LocalJSX.CurrentDayFoodList & JSXBase.HTMLAttributes<HTMLCurrentDayFoodListElement>;
+            "current-day-macros": LocalJSX.CurrentDayMacros & JSXBase.HTMLAttributes<HTMLCurrentDayMacrosElement>;
             "date-reader": LocalJSX.DateReader & JSXBase.HTMLAttributes<HTMLDateReaderElement>;
-            "food-list": LocalJSX.FoodList & JSXBase.HTMLAttributes<HTMLFoodListElement>;
+            "day-overview": LocalJSX.DayOverview & JSXBase.HTMLAttributes<HTMLDayOverviewElement>;
             "scan-food": LocalJSX.ScanFood & JSXBase.HTMLAttributes<HTMLScanFoodElement>;
         }
     }
