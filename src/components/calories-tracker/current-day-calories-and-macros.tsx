@@ -37,7 +37,7 @@ export class CurrentDayMacros {
     private async loadData() {
         try {
             // Load goals
-            const [goals, goalsError] = await this.goalsService.getGoals()
+            const [goals] = await this.goalsService.getGoals()
             if (goals) {
                 this.goals = goals
             }

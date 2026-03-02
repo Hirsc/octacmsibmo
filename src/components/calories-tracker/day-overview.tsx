@@ -23,6 +23,7 @@ export class DayOverview {
                 <ion-toolbar color="primary">
                     <ion-title>{this.title}</ion-title>
                     <ion-buttons slot="end">
+                        <theme-toggle />
                         <ion-button href="goals">
                             <ion-icon name="flag" slot="icon-only"></ion-icon>
                         </ion-button>

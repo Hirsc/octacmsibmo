@@ -41,6 +41,9 @@ export class AddFood {
                         <ion-back-button defaultHref="/"></ion-back-button>
                     </ion-buttons>
                     <ion-title>{this.title}</ion-title>
+                    <ion-buttons slot="end">
+                        <theme-toggle />
+                    </ion-buttons>
                 </ion-toolbar>
             </ion-header>,
 

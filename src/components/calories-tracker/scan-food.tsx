@@ -58,6 +58,9 @@ export class ScanFood {
                         />
                     </ion-buttons>
                     <ion-title>{this.title}</ion-title>
+                    <ion-buttons slot="end">
+                        <theme-toggle />
+                    </ion-buttons>
                 </ion-toolbar>
             </ion-header>,
             (

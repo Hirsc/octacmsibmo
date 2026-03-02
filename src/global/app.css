@@ -21,6 +21,10 @@
 @import "~@ionic/core/css/text-transformation.css";
 @import "~@ionic/core/css/flex-utils.css";
 
+/** Dark Mode Theme CSS */
+@import "~@ionic/core/css/palettes/dark.class.css";
+@import "~@ionic/core/css/palettes/dark.always.css";
+
 /*
   The CSS Variables below can be used to theme your app.
   For more info on CSS variables check out:
@@ -29,3 +33,121 @@
   More info about color theming using Ionic:
   https://ionicframework.com/docs/theming/color-generator
 */
+
+/* Light Theme (Default) */
+:root {
+  --ion-background-color: #ffffff;
+  --ion-text-color: #000000;
+  --ion-card-background: #ffffff;
+  --ion-item-background: #ffffff;
+  --ion-toolbar-background: #3880ff;
+  --ion-toolbar-color: #ffffff;
+
+  /* Progress bars */
+  --ion-color-success: #2dd36f;
+  --ion-color-warning: #ffc409;
+  --ion-color-medium: #92949c;
+}
+
+/* Dark Theme */
+.dark-theme {
+  --ion-background-color: #1a1a1a;
+  --ion-text-color: #ffffff;
+  --ion-card-background: #2a2a2a;
+  --ion-item-background: #2a2a2a;
+  --ion-toolbar-background: #0d0d0d;
+  --ion-toolbar-color: #ffffff;
+
+  /* Dark mode specific colors */
+  --ion-color-light: #2a2a2a;
+  --ion-color-medium-shade: #92949c;
+
+  /* Progress bars in dark mode */
+  --ion-color-success-contrast: #1a1a1a;
+  --ion-color-warning-contrast: #1a1a1a;
+  --ion-color-medium-contrast: #1a1a1a;
+}
+
+/* Dark mode transitions */
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+ion-card {
+  transition: background-color 0.3s ease;
+}
+
+ion-item {
+  transition: background-color 0.3s ease;
+}
+
+ion-toolbar {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark theme adjustments for better contrast */
+.dark-theme ion-content {
+  --ion-background-color: #1a1a1a;
+}
+
+.dark-theme ion-list {
+  --ion-background-color: #1a1a1a;
+}
+
+.dark-theme ion-card {
+  --ion-card-background: #2a2a2a;
+}
+
+.dark-theme ion-item {
+  --ion-item-background: #2a2a2a;
+  --ion-item-border-color: #3a3a3a;
+}
+
+.dark-theme ion-input {
+  --ion-background-color: #2a2a2a;
+  --ion-color: #ffffff;
+}
+
+.dark-theme ion-label {
+  --ion-color-contrast: #ffffff;
+}
+
+.dark-theme ion-note {
+  --ion-color-contrast: #92949c;
+}
+
+/* Dark mode button adjustments */
+.dark-theme ion-button {
+  --ion-color-base: #3880ff;
+  --ion-color-base-rgb: 56, 128, 255;
+}
+
+.dark-theme ion-button[fill="outline"] {
+  --ion-color-base: #3880ff;
+  --ion-color-base-rgb: 56, 128, 255;
+}
+
+/* Dark mode progress bar adjustments */
+.dark-theme ion-progress-bar {
+  --ion-progress-buffer-background: #3a3a3a;
+}
+
+/* Dark mode FAB adjustments */
+.dark-theme ion-fab-button {
+  --ion-color-base: #3880ff;
+  --ion-color-base-rgb: 56, 128, 255;
+}
+
+/* Dark mode toggle icon styles */
+.theme-toggle {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
+}

@@ -44,6 +44,8 @@ export namespace Components {
         "foodInformationService": FoodInformationService;
         "foodService": FoodService;
     }
+    interface ThemeToggle {
+    }
 }
 declare global {
     interface HTMLAddFoodElement extends Components.AddFood, HTMLStencilElement {
@@ -106,6 +108,12 @@ declare global {
         prototype: HTMLScanFoodElement;
         new (): HTMLScanFoodElement;
     };
+    interface HTMLThemeToggleElement extends Components.ThemeToggle, HTMLStencilElement {
+    }
+    var HTMLThemeToggleElement: {
+        prototype: HTMLThemeToggleElement;
+        new (): HTMLThemeToggleElement;
+    };
     interface HTMLElementTagNameMap {
         "add-food": HTMLAddFoodElement;
         "app-profile": HTMLAppProfileElement;
@@ -117,6 +125,7 @@ declare global {
         "day-overview": HTMLDayOverviewElement;
         "goals-settings": HTMLGoalsSettingsElement;
         "scan-food": HTMLScanFoodElement;
+        "theme-toggle": HTMLThemeToggleElement;
     }
 }
 declare namespace LocalJSX {
@@ -153,6 +162,8 @@ declare namespace LocalJSX {
         "foodInformationService"?: FoodInformationService;
         "foodService"?: FoodService;
     }
+    interface ThemeToggle {
+    }
     interface IntrinsicElements {
         "add-food": AddFood;
         "app-profile": AppProfile;
@@ -164,6 +175,7 @@ declare namespace LocalJSX {
         "day-overview": DayOverview;
         "goals-settings": GoalsSettings;
         "scan-food": ScanFood;
+        "theme-toggle": ThemeToggle;
     }
 }
 export { LocalJSX as JSX };
@@ -180,6 +192,7 @@ declare module "@stencil/core" {
             "day-overview": LocalJSX.DayOverview & JSXBase.HTMLAttributes<HTMLDayOverviewElement>;
             "goals-settings": LocalJSX.GoalsSettings & JSXBase.HTMLAttributes<HTMLGoalsSettingsElement>;
             "scan-food": LocalJSX.ScanFood & JSXBase.HTMLAttributes<HTMLScanFoodElement>;
+            "theme-toggle": LocalJSX.ThemeToggle & JSXBase.HTMLAttributes<HTMLThemeToggleElement>;
         }
     }
 }

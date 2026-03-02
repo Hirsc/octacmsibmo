@@ -6,9 +6,10 @@ const GOALS_STORAGE_KEY = "daily_goals"
 
 export class GoalsService {
     private static instance: GoalsService
+    private storageService: StorageService<string>
 
     private constructor() {
-        // Private constructor for singleton
+        this.storageService = new StorageService<string>()
     }
 
     public static getInstance(): GoalsService {
@@ -20,7 +21,7 @@ export class GoalsService {
 
     public async getGoals(): Promise<[DailyGoals?, Error?]> {
         try {
-            const goalsData = await StorageService.get(GOALS_STORAGE_KEY)
+            const goalsData = await this.storageService.get(GOALS_STORAGE_KEY)
 
             if (!goalsData) {
                 return [DEFAULT_GOALS]
@@ -37,7 +38,7 @@ export class GoalsService {
     public async setGoals(goals: DailyGoals): Promise<[void?, Error?]> {
         try {
             const goalsData = JSON.stringify(goals)
-            await StorageService.set(GOALS_STORAGE_KEY, goalsData)
+            await this.storageService.set(GOALS_STORAGE_KEY, goalsData)
             return []
         } catch (error) {
             console.error("Failed to set goals:", error)

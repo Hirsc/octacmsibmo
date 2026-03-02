@@ -59,6 +59,9 @@ export class GoalsSettings {
                         <ion-back-button defaultHref="/" />
                     </ion-buttons>
                     <ion-title>Daily Goals</ion-title>
+                    <ion-buttons slot="end">
+                        <theme-toggle />
+                    </ion-buttons>
                 </ion-toolbar>
             </ion-header>,
             <ion-content>
