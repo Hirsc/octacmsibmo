@@ -15,6 +15,9 @@ export namespace Components {
         "day": string;
         "service": FoodService;
     }
+    interface AppProfile {
+        "name": string;
+    }
     interface AppRoot {
     }
     interface BarcodeReader {
@@ -34,6 +37,8 @@ export namespace Components {
     interface DayOverview {
         "dayMonthYear": string;
     }
+    interface GoalsSettings {
+    }
     interface ScanFood {
         "dayMonthYear": string;
         "foodInformationService": FoodInformationService;
@@ -46,6 +51,12 @@ declare global {
     var HTMLAddFoodElement: {
         prototype: HTMLAddFoodElement;
         new (): HTMLAddFoodElement;
+    };
+    interface HTMLAppProfileElement extends Components.AppProfile, HTMLStencilElement {
+    }
+    var HTMLAppProfileElement: {
+        prototype: HTMLAppProfileElement;
+        new (): HTMLAppProfileElement;
     };
     interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {
     }
@@ -83,6 +94,12 @@ declare global {
         prototype: HTMLDayOverviewElement;
         new (): HTMLDayOverviewElement;
     };
+    interface HTMLGoalsSettingsElement extends Components.GoalsSettings, HTMLStencilElement {
+    }
+    var HTMLGoalsSettingsElement: {
+        prototype: HTMLGoalsSettingsElement;
+        new (): HTMLGoalsSettingsElement;
+    };
     interface HTMLScanFoodElement extends Components.ScanFood, HTMLStencilElement {
     }
     var HTMLScanFoodElement: {
@@ -91,12 +108,14 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "add-food": HTMLAddFoodElement;
+        "app-profile": HTMLAppProfileElement;
         "app-root": HTMLAppRootElement;
         "barcode-reader": HTMLBarcodeReaderElement;
         "current-day-food-list": HTMLCurrentDayFoodListElement;
         "current-day-macros": HTMLCurrentDayMacrosElement;
         "date-reader": HTMLDateReaderElement;
         "day-overview": HTMLDayOverviewElement;
+        "goals-settings": HTMLGoalsSettingsElement;
         "scan-food": HTMLScanFoodElement;
     }
 }
@@ -104,6 +123,9 @@ declare namespace LocalJSX {
     interface AddFood {
         "day"?: string;
         "service"?: FoodService;
+    }
+    interface AppProfile {
+        "name"?: string;
     }
     interface AppRoot {
     }
@@ -124,6 +146,8 @@ declare namespace LocalJSX {
     interface DayOverview {
         "dayMonthYear"?: string;
     }
+    interface GoalsSettings {
+    }
     interface ScanFood {
         "dayMonthYear"?: string;
         "foodInformationService"?: FoodInformationService;
@@ -131,12 +155,14 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "add-food": AddFood;
+        "app-profile": AppProfile;
         "app-root": AppRoot;
         "barcode-reader": BarcodeReader;
         "current-day-food-list": CurrentDayFoodList;
         "current-day-macros": CurrentDayMacros;
         "date-reader": DateReader;
         "day-overview": DayOverview;
+        "goals-settings": GoalsSettings;
         "scan-food": ScanFood;
     }
 }
@@ -145,12 +171,14 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "add-food": LocalJSX.AddFood & JSXBase.HTMLAttributes<HTMLAddFoodElement>;
+            "app-profile": LocalJSX.AppProfile & JSXBase.HTMLAttributes<HTMLAppProfileElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
             "barcode-reader": LocalJSX.BarcodeReader & JSXBase.HTMLAttributes<HTMLBarcodeReaderElement>;
             "current-day-food-list": LocalJSX.CurrentDayFoodList & JSXBase.HTMLAttributes<HTMLCurrentDayFoodListElement>;
             "current-day-macros": LocalJSX.CurrentDayMacros & JSXBase.HTMLAttributes<HTMLCurrentDayMacrosElement>;
             "date-reader": LocalJSX.DateReader & JSXBase.HTMLAttributes<HTMLDateReaderElement>;
             "day-overview": LocalJSX.DayOverview & JSXBase.HTMLAttributes<HTMLDayOverviewElement>;
+            "goals-settings": LocalJSX.GoalsSettings & JSXBase.HTMLAttributes<HTMLGoalsSettingsElement>;
             "scan-food": LocalJSX.ScanFood & JSXBase.HTMLAttributes<HTMLScanFoodElement>;
         }
     }

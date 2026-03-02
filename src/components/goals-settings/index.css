@@ -1,0 +1,8 @@
+.ion-margin-top {
+    margin-top: 12px;
+}
+
+ion-note {
+    font-size: 12px;
+    color: var(--ion-color-medium);
+}

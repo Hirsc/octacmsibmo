@@ -37,7 +37,15 @@ export class OpenFoodFactsService implements Getter<FoodInformation> {
 
             validateResponse(offResponse)
 
-            return [{ name: offResponse.product.product_name }]
+            const nutriments = offResponse.product.nutriments
+
+            return [{
+                name: offResponse.product.product_name,
+                protein: nutriments.proteins_100g ?? null,
+                fat: nutriments.fat_100g ?? null,
+                carbonhydrate: nutriments.carbohydrates_100g ?? null,
+                energy: nutriments["energy-kcal_100g"] ?? null,
+            }]
         } catch (error) {
             console.error(`Fetching product failed with an error: \n ${error}`)
             return [, error]
@@ -65,87 +73,14 @@ type Status = 1 | 0
 
 interface Product {
     product_name: string
-    nutriscore_data: {
-        sodium: number,
-        saturated_fat_ratio_value: number,
-        is_beverage: number,
-        fiber_points: number,
-        is_cheese: number,
-        sugars_value: number,
-        fiber: number,
-        energy_value: number,
-        saturated_fat_ratio_points: number,
-        sugars_points: number,
-        fiber_value: number,
-        sodium_points: number,
-        fruits_vegetables_nuts_colza_walnut_olive_oils_value: number,
-        proteins_points: number,
-        energy: number,
-        is_water: number,
-        saturated_fat_value: number,
-        energy_points: number,
-        fruits_vegetables_nuts_colza_walnut_olive_oils: number,
-        proteins_value: number,
-        sugars: number,
-        fruits_vegetables_nuts_colza_walnut_olive_oils_points: number,
-        grade: string,
-        negative_points: number,
-        sodium_value: number,
-        saturated_fat_points: number,
-        is_fat: number,
-        proteins: number,
-        saturated_fat_ratio: number,
-        score: number,
-        saturated_fat: number,
-        positive_points: number,
-    },
-    "nutriments": {
-        "salt": 0.02,
-        "nova-group_100g": 2,
-        "saturated-fat_unit": "g",
-        "proteins_value": 0.5,
-        "nutrition-score-fr_100g": 15,
-        "energy_unit": "kJ",
-        "carbohydrates_unit": "g",
-        "salt_value": 0.02,
-        "fat_100g": 65,
-        "energy-kj_unit": "kJ",
-        "energy-kj": 2422,
-        "sugars_100g": 0.5,
-        "sugars": 0.5,
-        "energy-kj_100g": 2422,
-        "proteins_100g": 0.5,
-        "proteins": 0.5,
-        "sodium_value": 0.008,
-        "sugars_unit": "g",
-        "salt_100g": 0.02,
-        "carbohydrates": 0.5,
-        "energy-kcal_unit": "kcal",
-        "energy_100g": 2422,
-        "fat": 65,
-        "sodium_100g": 0.008,
-        "saturated-fat": 35,
-        "energy-kj_value": 2422,
-        "salt_unit": "g",
-        "proteins_unit": "g",
-        "sodium": 0.008,
-        "sodium_unit": "g",
-        "nova-group": 2,
-        "energy-kcal_100g": 589,
-        "energy-kcal_value": 589,
-        "energy-kcal": 589,
-        "fat_unit": "g",
-        "energy_value": 2422,
-        "nova-group_serving": 2,
-        "sugars_value": 0.5,
-        "carbohydrates_value": 0.5,
-        "saturated-fat_100g": 35,
-        "energy": 2422,
-        "saturated-fat_value": 35,
-        "fruits-vegetables-nuts-estimate-from-ingredients_100g": 0,
-        "fat_value": 65,
-        "carbohydrates_100g": 0.5,
-        "nutrition-score-fr": 15
-    },
+    nutriments: Nutriments
+    [key: string]: any
+}
+
+interface Nutriments {
+    proteins_100g?: number
+    fat_100g?: number
+    carbohydrates_100g?: number
+    "energy-kcal_100g"?: number
     [key: string]: any
 }

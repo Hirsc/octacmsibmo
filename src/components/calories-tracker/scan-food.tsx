@@ -6,6 +6,7 @@ import type { FoodInformation } from "../../entities/food-information"
 import { NotFound } from "../../entities/not-found"
 import type { Getter } from "../../open-food-facts/getter"
 import { toastError } from "../toasts/error"
+import { getErrorMessage, hasValidationErrors, validateFoodInput } from "../../utils/food-validation"
 
 import type { AddFoodToADay } from "./service/interface"
 
@@ -32,7 +33,6 @@ export class ScanFood {
     @Prop() public foodService: FoodService
     @Prop() public foodInformationService: FoodInformationService
     @Prop() public dayMonthYear: string
-    @State() private error: Error
 
     private title = "Add Food"
 
@@ -71,22 +71,90 @@ export class ScanFood {
             (
                 this.formControls.code !== null &&
                 <ion-content>
-                    {this.error &&
-                        <ion-item
-                            class="root ion-text-center"
-                        >
-                            <ion-label
-                                position="stacked"
-                                mode="ios"
+                    <form onSubmit={(e) => this.handleSubmit(e)} novalidate>
+                        <ion-list lines="full" class="ion-no-margin ion-no-padding">
+                            <ion-item>
+                                <ion-label position="stacked">Food Name <ion-text color="danger">*</ion-text></ion-label>
+                                <ion-input
+                                    required
+                                    type="text"
+                                    value={this.formControls.name}
+                                    onInput={this.changeFormValue("name")}
+                                />
+                            </ion-item>
+
+                            <ion-item>
+                                <ion-label position="stacked">Energy (kcal) <ion-text color="danger">*</ion-text></ion-label>
+                                <ion-input
+                                    required
+                                    type="number"
+                                    min="0"
+                                    max="9000"
+                                    value={this.formControls.energy}
+                                    onInput={this.changeFormValue("energy")}
+                                />
+                            </ion-item>
+
+                            <ion-item>
+                                <ion-label position="stacked">Protein (g) <ion-text color="danger">*</ion-text></ion-label>
+                                <ion-input
+                                    required
+                                    type="number"
+                                    min="0"
+                                    max="100"
+                                    value={this.formControls.protein}
+                                    onInput={this.changeFormValue("protein")}
+                                />
+                            </ion-item>
+
+                            <ion-item>
+                                <ion-label position="stacked">Fat (g) <ion-text color="danger">*</ion-text></ion-label>
+                                <ion-input
+                                    required
+                                    type="number"
+                                    min="0"
+                                    max="100"
+                                    value={this.formControls.fat}
+                                    onInput={this.changeFormValue("fat")}
+                                />
+                            </ion-item>
+
+                            <ion-item>
+                                <ion-label position="stacked">Carbohydrates (g) <ion-text color="danger">*</ion-text></ion-label>
+                                <ion-input
+                                    required
+                                    type="number"
+                                    min="0"
+                                    max="100"
+                                    value={this.formControls.carbonhydrate}
+                                    onInput={this.changeFormValue("carbonhydrate")}
+                                />
+                            </ion-item>
+
+                            <ion-item>
+                                <ion-label position="stacked">Amount (g) <ion-text color="danger">*</ion-text></ion-label>
+                                <ion-input
+                                    required
+                                    type="number"
+                                    min="1"
+                                    max="10000"
+                                    value={this.formControls.amount}
+                                    onInput={this.changeFormValue("amount")}
+                                />
+                            </ion-item>
+
+                        </ion-list>
+
+                        <div class="ion-padding">
+                            <ion-button
+                                expand="block"
+                                type="submit"
+                                class="ion-no-margin"
                             >
-                                Food Name
-                        </ion-label>
-                            <ion-input
-                                type="text"
-                                onIonChange={this.changeName}
-                            />
-                        </ion-item>
-                    }
+                                Save Food
+                            </ion-button>
+                        </div>
+                    </form>
                 </ion-content>
             ),
             <ion-alert-controller></ion-alert-controller>,
@@ -99,9 +167,7 @@ export class ScanFood {
             const [foodInformation, error] = await this.foodInformationService.get(newValue.code)
 
             if (error) {
-                toastOFFError(error)
-                this.error = error
-
+                toastOpenFoodFactsError(error)
                 this.formControls = {
                     ...this.formControls,
                     code: null,
@@ -112,20 +178,25 @@ export class ScanFood {
                 this.formControls = {
                     ...this.formControls,
                     name: foodInformation.name,
+                    protein: foodInformation.protein,
+                    fat: foodInformation.fat,
+                    carbonhydrate: foodInformation.carbonhydrate,
+                    energy: foodInformation.energy,
+                    amount: foodInformation.energy ? 100 : null, // Default to 100g if we have nutritional data
                 }
             }
 
         }
-
-        if (
-            newValue.code !== null
-            && newValue.name !== null
-        ) {
-            this.saveFood()
-        }
     }
 
     private saveFood() {
+        const validationErrors = validateFoodInput(this.formControls)
+
+        if (hasValidationErrors(validationErrors)) {
+            toastError(getErrorMessage(validationErrors))
+            return
+        }
+
         this.foodService.addFoodToADay(this.formControls, this.dayMonthYear)
         window.history.back()
     }
@@ -143,9 +214,23 @@ export class ScanFood {
             name: event.detail.value,
         }
     }
+
+    private changeFormValue(path: string) {
+        return (e: any) => {
+            this.formControls = {
+                ...this.formControls,
+                [path]: e.target.value,
+            }
+        }
+    }
+
+    private handleSubmit(e: Event) {
+        e.preventDefault()
+        this.saveFood()
+    }
 }
 
-function toastOFFError(error: Error) {
+function toastOpenFoodFactsError(error: Error) {
     if (error instanceof NotFound) {
         toastError("Product not found. Try again")
         return

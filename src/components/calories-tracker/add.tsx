@@ -1,6 +1,8 @@
 import { Component, h, Prop, State } from "@stencil/core"
 
 import type { Food } from "../../entities/food"
+import { toastError } from "../toasts/error"
+import { getErrorMessage, hasValidationErrors, validateFoodInput } from "../../utils/food-validation"
 
 import type { AddFoodToADay } from "./service/interface"
 
@@ -55,11 +57,65 @@ export class AddFood {
                         </ion-item>
 
                         <ion-item>
-                            <ion-label position="stacked">{this.ean} <ion-text color="danger">*</ion-text></ion-label>
+                            <ion-label position="stacked">Energy (kcal) <ion-text color="danger">*</ion-text></ion-label>
                             <ion-input
                                 required
                                 type="number"
-                                onInput={this.changeFormValue("ean")}
+                                min="0"
+                                max="9000"
+                                onInput={this.changeFormValue("energy")}
+                            />
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label position="stacked">Protein (g) <ion-text color="danger">*</ion-text></ion-label>
+                            <ion-input
+                                required
+                                type="number"
+                                min="0"
+                                max="100"
+                                onInput={this.changeFormValue("protein")}
+                            />
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label position="stacked">Fat (g) <ion-text color="danger">*</ion-text></ion-label>
+                            <ion-input
+                                required
+                                type="number"
+                                min="0"
+                                max="100"
+                                onInput={this.changeFormValue("fat")}
+                            />
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label position="stacked">Carbohydrates (g) <ion-text color="danger">*</ion-text></ion-label>
+                            <ion-input
+                                required
+                                type="number"
+                                min="0"
+                                max="100"
+                                onInput={this.changeFormValue("carbonhydrate")}
+                            />
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label position="stacked">Amount (g) <ion-text color="danger">*</ion-text></ion-label>
+                            <ion-input
+                                required
+                                type="number"
+                                min="1"
+                                max="10000"
+                                onInput={this.changeFormValue("amount")}
+                            />
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label position="stacked">{this.ean}</ion-label>
+                            <ion-input
+                                type="number"
+                                onInput={this.changeFormValue("code")}
                             />
                         </ion-item>
 
@@ -70,8 +126,6 @@ export class AddFood {
                             expand="block"
                             type="submit"
                             class="ion-no-margin"
-                            href="/"
-                            routerDirection="back"
                         >
                             {this.title}
                         </ion-button>
@@ -86,6 +140,14 @@ export class AddFood {
 
     private handleSubmit(e: Event) {
         e.preventDefault()
+
+        const validationErrors = validateFoodInput(this.formControls)
+
+        if (hasValidationErrors(validationErrors)) {
+            toastError(getErrorMessage(validationErrors))
+            return
+        }
+
         this.service.addFoodToADay(this.formControls, this.day)
         window.history.back()
     }

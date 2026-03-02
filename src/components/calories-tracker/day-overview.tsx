@@ -22,6 +22,11 @@ export class DayOverview {
             <ion-header>
                 <ion-toolbar color="primary">
                     <ion-title>{this.title}</ion-title>
+                    <ion-buttons slot="end">
+                        <ion-button href="goals">
+                            <ion-icon name="flag" slot="icon-only"></ion-icon>
+                        </ion-button>
+                    </ion-buttons>
                 </ion-toolbar>
             </ion-header>,
 
@@ -31,7 +36,13 @@ export class DayOverview {
 
                 <ion-fab vertical="bottom" horizontal="start" slot="fixed">
                     <ion-fab-button href="add">
-                        <ion-icon name="add"></ion-icon>
+                        <ion-icon name="barcode"></ion-icon>
+                    </ion-fab-button>
+                </ion-fab>
+
+                <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+                    <ion-fab-button href="add-manual">
+                        <ion-icon name="create"></ion-icon>
                     </ion-fab-button>
                 </ion-fab>
             </ion-content>,

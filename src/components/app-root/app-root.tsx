@@ -25,6 +25,12 @@ export class AppRoot {
                         component="scan-food"
                         componentProps={{ foodService, foodInformationService, dayMonthYear: todayMonthYear }}
                     />
+                    <ion-route
+                        url="/add-manual"
+                        component="add-food"
+                        componentProps={{ service: foodService, day: todayMonthYear }}
+                    />
+                    <ion-route url="/goals" component="goals-settings" />
                     <ion-route url="/profile/:name" component="app-profile" />
                 </ion-router>
                 <ion-nav />
